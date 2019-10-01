@@ -15,6 +15,7 @@ typedef struct {
   struct IDiscordUserEvents users_events;
   struct IDiscordActivityEvents activities_events;
   struct IDiscordRelationshipEvents relationships_events;
+  bool initialized;
 } AddonState;
 
 #endif

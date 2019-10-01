@@ -6,6 +6,31 @@ static void Destroy(napi_env env, void* data, void* hint) {
   free(state);
 }
 
+napi_value RunCallback(napi_env env, napi_callback_info info) {
+  void *data;
+  AddonState *state;
+  napi_value ret;
+
+  NAPI_REQUIRE(napi_get_cb_info(env, info, 0, NULL, NULL, &data));
+  state = data;
+
+  if (state->initialized == false) {
+    NAPI_REQUIRE(napi_get_boolean(env, false, &ret));
+    return ret;
+  }
+
+  enum EDiscordResult result;
+  result = state->app.core->run_callbacks(state->app.core);
+
+  if (result != DiscordResult_Ok) {
+    NAPI_REQUIRE(napi_get_boolean(env, false, &ret));
+    return ret;
+  }
+
+  NAPI_REQUIRE(napi_get_boolean(env, true, &ret));
+  return ret;
+}
+
 napi_value Create(napi_env env, napi_callback_info info) {
   size_t argc = 2;
   napi_value argv[argc];
@@ -50,6 +75,8 @@ napi_value Create(napi_env env, napi_callback_info info) {
   app->application = app->core->get_application_manager(app->core);
   app->relationships = app->core->get_relationship_manager(app->core);
 
+  state->initialized = true;
+
   NAPI_REQUIRE(napi_get_boolean(env, true, &ret));
   return ret;
 }
@@ -58,6 +85,7 @@ napi_value Init(napi_env env, napi_value exports)
 {
   // Setup Module State
   AddonState* state = malloc(sizeof(*state));
+  state->initialized = false;
   napi_wrap(env, exports, state, Destroy, NULL, NULL);
 
   // Setup Objects
@@ -66,7 +94,8 @@ napi_value Init(napi_env env, napi_value exports)
 
   napi_property_descriptor desc[] = {
     { "version", NULL, NULL, NULL, NULL, version, napi_default, NULL },
-    { "create", NULL, Create, NULL, NULL, NULL, napi_default, state }
+    { "create", NULL, Create, NULL, NULL, NULL, napi_default, state },
+    { "runCallback", NULL, RunCallback, NULL, NULL, NULL, napi_default, state }
   };
 
   NAPI_REQUIRE(napi_define_properties(env, exports, sizeof(desc) / sizeof(desc[0]), desc));
