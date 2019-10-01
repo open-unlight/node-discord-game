@@ -3,7 +3,8 @@
     {
       "target_name": "discord_game",
       "sources": [
-        "src/discord_game.c"
+        "src/discord_game.c",
+        "src/application.c"
       ],
       "include_dirs": [
         "include/",

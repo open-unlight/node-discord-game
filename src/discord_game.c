@@ -89,13 +89,16 @@ napi_value Init(napi_env env, napi_value exports)
   napi_wrap(env, exports, state, Destroy, NULL, NULL);
 
   // Setup Objects
-  napi_value version;
+  napi_value version,
+             application;
   NAPI_REQUIRE(napi_create_uint32(env, DISCORD_VERSION, &version));
+  application = Application_Init(env, state);
 
   napi_property_descriptor desc[] = {
     { "version", NULL, NULL, NULL, NULL, version, napi_default, NULL },
     { "create", NULL, Create, NULL, NULL, NULL, napi_default, state },
-    { "runCallback", NULL, RunCallback, NULL, NULL, NULL, napi_default, state }
+    { "runCallback", NULL, RunCallback, NULL, NULL, NULL, napi_default, state },
+    { "Application", NULL, NULL, NULL, NULL, application, napi_default, NULL }
   };
 
   NAPI_REQUIRE(napi_define_properties(env, exports, sizeof(desc) / sizeof(desc[0]), desc));

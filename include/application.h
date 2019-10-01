@@ -18,4 +18,6 @@ typedef struct {
   bool initialized;
 } AddonState;
 
+napi_value Application_Init(napi_env env, AddonState* state);
+
 #endif
