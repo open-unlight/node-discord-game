@@ -14,6 +14,8 @@
 #include "discord_game_sdk.h"
 
 // Discord Game
+#include "core.h"
+#include "promise.h"
 #include "application.h"
 #include "macro.h"
 

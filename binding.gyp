@@ -33,7 +33,7 @@
           "link_settings": {
             "libraries": [
               "-Wl,-rpath,<(module_root_dir)/sdk/x86_64",
-              "<(module_root_dir)/sdk/x86_64/discord_game_sdk.bundle"
+              "<(module_root_dir)/sdk/x86_64/discord_game_sdk.dylib"
             ]
           }
         }]

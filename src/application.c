@@ -1,4 +1,4 @@
-#include "discord_game.h"
+#include "application.h"
 
 napi_value GetApplicationLocale(napi_env env, napi_callback_info info) {
   void* data;
@@ -42,13 +42,62 @@ napi_value GetApplicationBranch(napi_env env, napi_callback_info info) {
   return ret;
 }
 
+void OnOAuth2Token(void* data, enum EDiscordResult result, struct DiscordOAuth2Token* token) {
+  Promise* promise = data;
+  napi_value ret;
+  if (result != DiscordResult_Ok) {
+    NAPI_REQUIRE(napi_create_uint32(promise->env, (uint32_t)result, &ret));
+    NAPI_REQUIRE(napi_reject_deferred(promise->env, promise->deferred, ret));
+    return;
+  }
+
+  // TODO: Return OAuth2Token Object
+  NAPI_REQUIRE(napi_create_string_utf8(promise->env, token->access_token, NAPI_AUTO_LENGTH, &ret));
+  NAPI_REQUIRE(napi_resolve_deferred(promise->env, promise->deferred, ret));
+
+  promise->env = NULL;
+  promise->deferred = NULL;
+  free(promise);
+}
+
+napi_value GetOAuth2Token(napi_env env, napi_callback_info info) {
+  void* data;
+  AddonState* state;
+
+  NAPI_REQUIRE(napi_get_cb_info(env, info, 0, NULL, NULL, &data));
+  state = data;
+
+  napi_value promise;
+  napi_deferred deferred;
+  NAPI_REQUIRE(napi_create_promise(env, &deferred, &promise));
+
+  if (!state->initialized) {
+    napi_value undefiend;
+    NAPI_REQUIRE(napi_get_undefined(env, &undefiend));
+    NAPI_REQUIRE(napi_reject_deferred(env, deferred, undefiend));
+
+    return promise;
+  }
+
+  Promise *cb_data = malloc(sizeof(*cb_data));
+
+  cb_data->env = env;
+  cb_data->deferred = deferred;
+  cb_data->state = state;
+
+  state->app.application->get_oauth2_token(state->app.application, cb_data, OnOAuth2Token);
+
+  return promise;
+}
+
 napi_value Application_Init(napi_env env, AddonState* state) {
   napi_value exports;
   NAPI_REQUIRE(napi_create_object(env, &exports));
 
   napi_property_descriptor desc[] = {
     { "locale", NULL, NULL, GetApplicationLocale, NULL, NULL, napi_default, state },
-    { "branch", NULL, NULL, GetApplicationBranch, NULL, NULL, napi_default, state }
+    { "branch", NULL, NULL, GetApplicationBranch, NULL, NULL, napi_default, state },
+    { "getOAuth2Token", NULL, GetOAuth2Token, NULL, NULL, NULL, napi_default, state }
   };
 
   NAPI_REQUIRE(napi_define_properties(env, exports, sizeof(desc) / sizeof(desc[0]), desc));

@@ -2,7 +2,10 @@
 
 static void Destroy(napi_env env, void* data, void* hint) {
   AddonState* state = data;
-  // TODO
+  Application *app = &state->app;
+
+  app->core->destroy(app->core);
+
   free(state);
 }
 
@@ -14,7 +17,7 @@ napi_value RunCallback(napi_env env, napi_callback_info info) {
   NAPI_REQUIRE(napi_get_cb_info(env, info, 0, NULL, NULL, &data));
   state = data;
 
-  if (state->initialized == false) {
+  if (!state->initialized) {
     NAPI_REQUIRE(napi_get_boolean(env, false, &ret));
     return ret;
   }
@@ -34,15 +37,24 @@ napi_value RunCallback(napi_env env, napi_callback_info info) {
 napi_value Create(napi_env env, napi_callback_info info) {
   size_t argc = 2;
   napi_value argv[argc];
+  napi_value ret;
   void* data;
   AddonState *state;
 
   NAPI_REQUIRE(napi_get_cb_info(env, info, &argc, argv, NULL, &data));
 
+  char c;
   bool is_required;
+  char raw_app_id[64];
   int64_t app_id;
-  NAPI_REQUIRE(napi_get_value_int64(env, argv[0], &app_id));
+  NAPI_REQUIRE(napi_get_value_string_utf8(env, argv[0], raw_app_id, 0, NULL));
   NAPI_REQUIRE(napi_get_value_bool(env, argv[1], &is_required));
+
+  int app_id_convert_success = sscanf(raw_app_id, "%" SCNi64 "%c", &app_id, &c);
+  if (!app_id_convert_success) {
+    NAPI_REQUIRE(napi_get_value_bool(env, false, &ret));
+    return ret;
+  }
 
   state = data;
   memset(&state->app, 0, sizeof(state->app));
@@ -50,18 +62,23 @@ napi_value Create(napi_env env, napi_callback_info info) {
   memset(&state->activities_events, 0, sizeof(state->activities_events));
   memset(&state->relationships_events, 0, sizeof(state->relationships_events));
 
+  // Register Events
+  // TODO
+  // state->users_events.on_current_user_update = OnUserUpdated;
+  // state->relationships_events.on_refresh = OnRelationshipsRefresh;
+
   Application *app = &state->app;
+
 
   struct DiscordCreateParams params;
   DiscordCreateParamsSetDefault(&params);
   params.client_id = (DiscordClientId)app_id;
   params.flags = is_required ? DiscordCreateFlags_Default : DiscordCreateFlags_NoRequireDiscord;
-  params.event_data = app;
+  params.event_data = state;
   params.activity_events = &state->activities_events;
   params.relationship_events = &state->relationships_events;
   params.user_events = &state->users_events;
 
-  napi_value ret;
   enum EDiscordResult result;
   result = DiscordCreate(DISCORD_VERSION, &params, &app->core);
 
@@ -71,8 +88,10 @@ napi_value Create(napi_env env, napi_callback_info info) {
   }
 
   app->users = app->core->get_user_manager(app->core);
+  app->achievements = app->core->get_achievement_manager(app->core);
   app->activities = app->core->get_activity_manager(app->core);
   app->application = app->core->get_application_manager(app->core);
+  app->lobbies = app->core->get_lobby_manager(app->core);
   app->relationships = app->core->get_relationship_manager(app->core);
 
   state->initialized = true;
