@@ -52,7 +52,7 @@ napi_value Create(napi_env env, napi_callback_info info) {
 
   int app_id_convert_success = sscanf(raw_app_id, "%" SCNi64 "%c", &app_id, &c);
   if (!app_id_convert_success) {
-    NAPI_REQUIRE(napi_get_value_bool(env, false, &ret));
+    NAPI_REQUIRE(napi_get_boolean(env, false, &ret));
     return ret;
   }
 
@@ -109,15 +109,18 @@ napi_value Init(napi_env env, napi_value exports)
 
   // Setup Objects
   napi_value version,
-             application;
+             application,
+             activity;
   NAPI_REQUIRE(napi_create_uint32(env, DISCORD_VERSION, &version));
   application = Application_Init(env, state);
+  activity = Activity_Init(env, state);
 
   napi_property_descriptor desc[] = {
     { "version", NULL, NULL, NULL, NULL, version, napi_default, NULL },
     { "create", NULL, Create, NULL, NULL, NULL, napi_default, state },
     { "runCallback", NULL, RunCallback, NULL, NULL, NULL, napi_default, state },
-    { "Application", NULL, NULL, NULL, NULL, application, napi_default, NULL }
+    { "Application", NULL, NULL, NULL, NULL, application, napi_default, NULL },
+    { "Activity", NULL, NULL, NULL, NULL, activity, napi_default, NULL }
   };
 
   NAPI_REQUIRE(napi_define_properties(env, exports, sizeof(desc) / sizeof(desc[0]), desc));

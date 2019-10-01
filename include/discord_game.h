@@ -17,6 +17,7 @@
 #include "core.h"
 #include "promise.h"
 #include "application.h"
+#include "activity.h"
 #include "macro.h"
 
 #endif

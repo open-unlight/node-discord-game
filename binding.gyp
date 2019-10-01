@@ -4,7 +4,8 @@
       "target_name": "discord_game",
       "sources": [
         "src/discord_game.c",
-        "src/application.c"
+        "src/application.c",
+        "src/activity.c"
       ],
       "include_dirs": [
         "include/",

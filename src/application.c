@@ -67,27 +67,27 @@ napi_value GetOAuth2Token(napi_env env, napi_callback_info info) {
   NAPI_REQUIRE(napi_get_cb_info(env, info, 0, NULL, NULL, &data));
   state = data;
 
-  napi_value promise;
+  napi_value ret;
   napi_deferred deferred;
-  NAPI_REQUIRE(napi_create_promise(env, &deferred, &promise));
+  NAPI_REQUIRE(napi_create_promise(env, &deferred, &ret));
 
   if (!state->initialized) {
     napi_value undefiend;
     NAPI_REQUIRE(napi_get_undefined(env, &undefiend));
     NAPI_REQUIRE(napi_reject_deferred(env, deferred, undefiend));
 
-    return promise;
+    return ret;
   }
 
-  Promise *cb_data = malloc(sizeof(*cb_data));
+  Promise *promise = malloc(sizeof(*promise));
 
-  cb_data->env = env;
-  cb_data->deferred = deferred;
-  cb_data->state = state;
+  promise->env = env;
+  promise->deferred = deferred;
+  promise->state = state;
 
-  state->app.application->get_oauth2_token(state->app.application, cb_data, OnOAuth2Token);
+  state->app.application->get_oauth2_token(state->app.application, promise, OnOAuth2Token);
 
-  return promise;
+  return ret;
 }
 
 napi_value Application_Init(napi_env env, AddonState* state) {
