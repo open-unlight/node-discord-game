@@ -90,7 +90,7 @@ Discord.create('Client ID', isRequireDiscord);
 
 const start_at = new Date();
 Discord.Activity
-       .update('Detail', 'State', 'Large Image', start_a)
+       .update('Detail', 'State', 'Large Image', start_at)
        .then(function() { console.log('Rich Presence updated') });
 
 setInterval(function() {
