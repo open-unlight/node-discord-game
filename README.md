@@ -26,11 +26,11 @@ Discord.create('Client ID', isRequireDiscord);
 // => true
 ```
 
-### version
+#### version
 
 Get Discord Game SDK Version
 
-### runCallback()
+#### runCallback()
 
 Resolve Discord's async behavior and call the callback;
 
