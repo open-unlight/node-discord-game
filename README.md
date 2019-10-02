@@ -19,7 +19,7 @@ Before using this module, you have to go to [Discord Developer](https://discorda
 Initialize Discord.
 
 ```js
-const Discord = require('discord_game');
+const Discord = require('discord-game');
 
 const isRequireDiscord = true;
 Discord.create('Client ID', isRequireDiscord);
@@ -35,7 +35,7 @@ Get Discord Game SDK Version
 Resolve Discord's async behavior and call the callback;
 
 ```js
-const Discord = require('discord_game');
+const Discord = require('discord-game');
 
 const isRequireDiscord = true;
 Discord.create('Client ID', isRequireDiscord);
@@ -60,7 +60,7 @@ Get the current branch
 Get the user OAuth2 Token.
 
 ```js
-const Discord = require('discord_game');
+const Discord = require('discord-game');
 
 const isRequireDiscord = true;
 Discord.create('Client ID', isRequireDiscord);
@@ -81,7 +81,7 @@ setInterval(function() {
 Update user's rich presence.
 
 ```js
-const Discord = require('discord_game');
+const Discord = require('discord-game');
 
 const isRequireDiscord = true;
 Discord.create('Client ID', isRequireDiscord);
