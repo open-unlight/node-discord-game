@@ -80,17 +80,40 @@ setInterval(function() {
 
 Update user's rich presence.
 
-> Not fully support
-
 ```js
 const Discord = require('discord_game');
 
 const isRequireDiscord = true;
 Discord.create('Client ID', isRequireDiscord);
 
+// All property are optional
+const activity = {
+  details: 'Details',
+  state: 'State',
+  assets: {
+    largeImage: 'large',
+    largeText: 'Large',
+    samllImage: 'small',
+    smallText: 'Small'
+  },
+  timestamps: {
+    startAt: new Date(),
+    endAt: new Date()
+  },
+  secrets: {
+    match: 'match',
+    join: 'join',
+    spectate: 'spectate'
+  },
+  party: {
+    id: 'id',
+    currentSize: 1,
+    maxSize: 5
+  }
+}
 const start_at = new Date();
 Discord.Activity
-       .update('Detail', 'State', 'Large Image', start_at)
+       .update(activity)
        .then(function() { console.log('Rich Presence updated') });
 
 setInterval(function() {
