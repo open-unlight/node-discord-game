@@ -1,5 +1,6 @@
 Discord Game SDK
 ===
+[![Node CI Status](https://github.com/open-unlight/node-discord-game/workflows/Node%20CI/badge.svg)](https://github.com/open-unlight/node-discord-game/actions?workflow=Node+CI)
 
 This is node.js module for Electron to integrate with Discord.
 
