@@ -36,7 +36,7 @@ napi_value RunCallback(napi_env env, napi_callback_info info) {
 
 napi_value Create(napi_env env, napi_callback_info info) {
   size_t argc = 2;
-  napi_value argv[argc];
+  napi_value argv[2];
   napi_value ret;
   void* data;
   AddonState *state;

@@ -1,6 +1,6 @@
 {
   "name": "discord-game",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "The Discord Game SDK for Electron.js",
   "main": "lib/discord_game.js",
   "scripts": {

@@ -2,10 +2,18 @@
 #define __DISCORD_GAME_H
 
 // Standard Library
-#include <assert.h>
-#include <stdio.h>
 #include <inttypes.h>
 #include <stdlib.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <assert.h>
+#include "discord_game_sdk.h"
+#ifdef _WIN32
+#include <Windows.h>
+#else
+#include <unistd.h>
+#include <string.h>
+#endif
 
 // Node NAPI
 #include <node_api.h>
