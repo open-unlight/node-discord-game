@@ -4,6 +4,7 @@
   "description": "The Discord Game SDK for Electron.js",
   "main": "lib/discord_game.js",
   "scripts": {
+    "build": "node-gyp configure && node-gyp build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
