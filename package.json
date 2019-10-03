@@ -5,7 +5,7 @@
   "main": "lib/discord_game.js",
   "scripts": {
     "build": "node-gyp configure && node-gyp build",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha -gc-global --reporter spec"
   },
   "repository": {
     "type": "git",
@@ -23,5 +23,8 @@
   "homepage": "https://github.com/open-unlight/node-discord-game#readme",
   "dependencies": {
     "bindings": "^1.5.0"
+  },
+  "devDependencies": {
+    "mocha": "^6.2.1"
   }
 }
