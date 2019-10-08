@@ -3,6 +3,7 @@
   "version": "0.1.1",
   "description": "The Discord Game SDK for Electron.js",
   "main": "lib/discord_game.js",
+  "types": "types/discord_game.d.ts",
   "scripts": {
     "build": "node-gyp configure && node-gyp build",
     "test": "mocha -gc-global --reporter spec"
