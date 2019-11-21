@@ -1,6 +1,7 @@
 Discord Game SDK
 ===
 [![Node CI Status](https://github.com/open-unlight/node-discord-game/workflows/Node%20CI/badge.svg)](https://github.com/open-unlight/node-discord-game/actions?workflow=Node+CI)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fopen-unlight%2Fnode-discord-game.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fopen-unlight%2Fnode-discord-game?ref=badge_shield)
 
 This is node.js module for Electron to integrate with Discord.
 
@@ -121,3 +122,7 @@ setInterval(function() {
   Discord.runCallback(); // => true
 }, 1000/60)
 ```
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fopen-unlight%2Fnode-discord-game.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fopen-unlight%2Fnode-discord-game?ref=badge_large)
