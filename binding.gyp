@@ -7,6 +7,7 @@
         "src/application.c",
         "src/activity.c"
       ],
+
       "include_dirs": [
         "include/",
         "sdk/"
@@ -25,7 +26,11 @@
               "link_settings": {
                 "libraries": [
                   "<(module_root_dir)/sdk/x86_64/discord_game_sdk.dll.lib"
-                ]
+                ],
+                "copies":[{
+                  "destination":"<(module_root_dir)/build/Release",
+                  "files":["<(module_root_dir)/sdk/x86_64/discord_game_sdk.dll"]
+                }]
               }
             }]
           ]
