@@ -10,6 +10,10 @@ This is node.js module for Electron to integrate with Discord.
 * Node.js 11+
 * Electron 6.0+
 
+## Windows Setup
+
+The Windows is required to add `dll` to project root, please copy `sdk\{ARCH}\discord_game_sdk.dll` to your project folder to ensure your Electron can access SDK correctly.
+
 ## Usage
 
 Before using this module, you have to go to [Discord Developer](https://discordapp.com/developers/applications/) to create an application.
