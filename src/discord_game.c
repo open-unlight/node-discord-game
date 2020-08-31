@@ -4,7 +4,9 @@ static void Destroy(napi_env env, void* data, void* hint) {
   AddonState* state = data;
   Application *app = &state->app;
 
-  app->core->destroy(app->core);
+  if (app->core) {
+    app->core->destroy(app->core);
+  }
 
   free(state);
 }
