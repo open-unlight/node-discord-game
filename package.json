@@ -6,7 +6,7 @@
   "types": "types/discord_game.d.ts",
   "scripts": {
     "build": "node-gyp configure && node-gyp build",
-    "test": "mocha -gc-global --reporter spec"
+    "test": "mocha -gc-global --reporter spec --exit"
   },
   "repository": {
     "type": "git",
