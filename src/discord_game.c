@@ -1,10 +1,14 @@
 #include "discord_game.h"
 
 static void Destroy(napi_env env, void* data, void* hint) {
-  AddonState* state = data;
+  if (!data) {
+    return;
+  }
+
+  AddonState* state = (AddonState*)data;
   Application *app = &state->app;
 
-  if (app->core) {
+  if (state->initialized && app->core) {
     app->core->destroy(app->core);
   }
 
