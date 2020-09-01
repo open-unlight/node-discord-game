@@ -168,12 +168,54 @@ napi_value UpdateActivity(napi_env env, napi_callback_info info) {
   return ret;
 }
 
+void OnActivityCleared(void* data, enum EDiscordResult result) {
+  Promise *promise = data;
+  napi_value undefined;
+  napi_get_undefined(promise->env, &undefined);
+
+  if (result == DiscordResult_Ok) {
+    napi_resolve_deferred(promise->env, promise->deferred, undefined);
+  } else {
+    napi_value result;
+    NAPI_REQUIRE(napi_create_uint32(promise->env, (uint32_t)sizeof(result), &result));
+    napi_reject_deferred(promise->env, promise->deferred, result);
+  }
+
+  promise->env = NULL;
+  promise->deferred = NULL;
+  free(promise);
+}
+
+napi_value ClearActivity(napi_env env, napi_callback_info info) {
+  void* data;
+  AddonState* state;
+  size_t argc = 0;
+  napi_value argv;
+
+  NAPI_REQUIRE(napi_get_cb_info(env, info, &argc, &argv, NULL, &data));
+  state = data;
+
+  napi_value ret;
+  napi_deferred deferred;
+  NAPI_REQUIRE(napi_create_promise(env, &deferred, &ret));
+
+  Promise *promise = malloc(sizeof(*promise));
+  promise->env = env;
+  promise->deferred = deferred;
+  promise->state = state;
+
+  state->app.activities->clear_activity(state->app.activities, promise, OnActivityCleared);
+
+  return ret;
+}
+
 napi_value Activity_Init(napi_env env, AddonState* state) {
   napi_value exports;
   NAPI_REQUIRE(napi_create_object(env, &exports));
 
   napi_property_descriptor desc[] = {
     { "update", NULL, UpdateActivity, NULL, NULL, NULL, napi_default, state },
+    { "clear", NULL, ClearActivity, NULL, NULL, NULL, napi_default, state },
   };
 
   NAPI_REQUIRE(napi_define_properties(env, exports, sizeof(desc) / sizeof(desc[0]), desc));
