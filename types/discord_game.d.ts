@@ -59,4 +59,5 @@ export namespace Activity {
     party?: ActivityParty;
   }
   export function update(activity: Activity): Promise<boolean>;
+  export function clear(): Promise<boolean>;
 }

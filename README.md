@@ -127,6 +127,14 @@ setInterval(function() {
 }, 1000/60)
 ```
 
+#### clear
+
+Clear user's rich presence.
+
+```js
+Discord.Activity.clear()
+```
+
 
 ## License
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fopen-unlight%2Fnode-discord-game.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fopen-unlight%2Fnode-discord-game?ref=badge_large)
