@@ -26,30 +26,3 @@ jobs:
         yarn test
       env:
         CI: true
-  package:
-    name: Package
-    needs: test
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [macos-latest, windows-latest]
-        node-version: [10.x, 12.x, 14.x]
-
-    steps:
-    - uses: actions/checkout@v2
-      with:
-        lfs: true
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - name: yarn install, build, and pack
-      run: |
-        yarn install
-        yarn build --if-present
-        yarn pack --filename discord-game.tgz
-    - name: Upload Package
-      uses: actions/upload-artifact@v1
-      with:
-        name: package
-        path: discord-game.tgz
