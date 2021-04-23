@@ -16,7 +16,7 @@ The Windows is required to add `dll` to project root, please copy `sdk\{ARCH}\di
 
 ## Usage
 
-Before using this module, you have to go to [Discord Developer](https://discordapp.com/developers/applications/) to create an application.
+Before using this module, you have to go to [Discord Developer](https://discord.com/developers/applications/) to create an application.
 
 ### Discord
 
