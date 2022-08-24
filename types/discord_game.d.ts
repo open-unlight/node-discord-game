@@ -8,7 +8,7 @@
 export as namespace Discord;
 
 export const version: number;
-export function create(appId: string);
+export function create(appId: string, isRequireDiscord: boolean): boolean;
 export function runCallback(): boolean;
 
 /**
